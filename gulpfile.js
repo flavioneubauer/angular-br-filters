@@ -6,6 +6,7 @@ var gulp = require('gulp'),
 	karma = require('karma').server,
 	jshintReporter = require('jshint-stylish'),
 	pkg = require(path.join(__dirname, 'package.json')),
+	uglify = require('gulp-uglify'),
 	plugins = require('gulp-load-plugins')({
 		config: path.join(__dirname, 'package.json')
 	}),
@@ -56,6 +57,15 @@ gulp.task('build', function() {
 
 gulp.task('default', ['jshint', 'build'], function() {
 	gulp.watch(config.src.files, ['jshint', 'build']);
+});
+
+gulp.task('build-noplugin', function(){
+
+	return gulp.src('src/filters.js')
+	        .pipe(uglify())
+		.pipe(plugins.rename('angular-br-filters-noplugin.min.js'))
+        	.pipe(gulp.dest('release'));
+
 });
 
 gulp.task('test', function(done) {
